@@ -1,0 +1,16 @@
+cscd340Lab8.c
+cscd340Lab8.c~
+cscd340_s16_lab8.pdf
+helper
+input.txt
+linkedlist
+Makefile
+Makefile~
+mysh
+output.txt
+pipes
+process
+tokenize
+utils
+/home/hari/Documents/Github/labs-hpatel527/Lab8
+testing

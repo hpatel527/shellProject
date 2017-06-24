@@ -1,0 +1,92 @@
+#include "./pipes/pipes.h"
+#include "./utils/myUtils.h"
+#include "./process/process.h"
+#include "./tokenize/makeArgs.h"
+//#include "./linkedlist/genericData.h"
+#include "./linkedlist/linkedList.h"
+#include "./listUtils.h"
+//#include "./requireIncludes.h"
+#include "./helper/Lab8Helper.h"
+
+int main()
+{
+  int HISTCOUNT = 1000;
+  int HISTFILECOUNT = 2000;  
+  int argc, pipeCount,promptId = 0;	
+  char **argv = NULL, s[MAX];
+  int preCount = 0, postCount = 0;
+  char ** prePipe = NULL, ** postPipe = NULL;
+  
+  
+  int found = readShrc(); // IF 0 - myshrc was found , IF 1 - myshrc wasn't found
+  
+  
+  
+  printf("command?: ");
+  fgets(s, MAX, stdin);
+  strip(s);
+
+  while(strcmp(s, "exit") != 0)
+  {
+	
+	
+	pipeCount = containsPipe(s);
+	
+	if(pipeCount > 0)
+	{
+		prePipe = parsePrePipe(s, &preCount);
+		postPipe = parsePostPipe(s, &postCount);
+		pipeIt(prePipe, postPipe);
+		clean(preCount, prePipe);
+        clean(postCount, postPipe);
+	
+	}// end if pipeCount
+	
+	
+	
+	else
+	{
+		argc = makeargs(s, &argv);
+		 
+	  	if(argc != -1)
+		{
+			// INSERT METHOD TO CHECK ARGV FOR A SPECIFIC PROMPT THAT RETURNS AN INTEGER that is passed into promptId
+			// IF ELSE STRUCTURE THAT CHECKS WHAT PROMPTID IS AND EXECUTES NECESSARY METHOD
+			
+			promptId = checkPrompt(argv,argc);
+			if(promptId == 0) // no special prompt
+			{
+				forkIt(argv);
+		    }
+			else if(promptId == 1) // IF PATH WAS FOUND
+			{
+				int pathSuccess = setPath(argv);		
+			}
+			else if(promptId == 2) // IF & WAS FOUND
+			{
+				forkItBackground(argv,argc);
+			}
+			else if(promptId == 3) // If CD WAS FOUND
+			{
+				int changeSuccess = changeDirectory(argv,argc);
+			}
+		 
+		
+	  	clean(argc, argv);
+	  	argv = NULL;
+		}
+		
+		
+	}
+	
+	printf("command?: ");
+	fgets(s, MAX, stdin);
+      	strip(s);
+		
+	
+  }// end while
+
+  return 0;
+
+}// end main
+

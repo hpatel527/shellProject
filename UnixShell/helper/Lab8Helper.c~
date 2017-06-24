@@ -1,0 +1,72 @@
+#include "Lab8Helper.h"
+// PURPOSE OF THIS C FILE IS TO CONTAIN HELPER METHODS FOR MYSHELL(cscd340Lab8.c)
+// HELPER METHODS INCLUDE CHECKING COMMANDS FOR SPECIFIC PROMPTS ( &, < , >>, >, PATH)
+// AND PROPAGATING FLAGS BACK TO THE MAIN C  FILE TO PASS INTO THE NECESSARY FUNCTIONS LIKE PIPEIT
+
+
+
+int checkPrompt(char ** argv) // THIS METHOD SEARCHES ARGV FOR SPECIFIC PROMPTS(PATH, &, !!) AND RETURNS AN APPRORIATE INTEGER FLAG
+{
+	char * s;
+	int prompt = 0; // 0 MEANS NO SPECIAL PROMPT, 1 - MEANS PATH , 2 - MEANS & , 3 - MEANS !!
+	printf("IN CHECKPROMPT");
+	strcpy (s,argv[0]);
+	
+	if (strstr(s, "PATH") != NULL)// contains PATH
+	{
+		prompt = 1;
+	}
+	
+	else if(strstr(s,"&") != NULL)
+	{
+		prompt = 2;
+	}
+	
+	else if(strstr(s,"!!") != NULL)
+	{
+		prompt = 3;
+	}
+	
+	return prompt;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+int setPath(char ** argv) // SETS PATH VARIABLE TO WHATEVER WAS PASSED IN ARGV(COMMAND)
+{
+	char * path;
+	char strAfter[200];
+	char *strJunk = "PATH=$PATH:";
+	strcpy(strAfter,argv[0]);
+	path = strstr(strAfter,strJunk);
+	strcpy(path,path + strlen(strJunk));
+	
+	
+	
+	
+	
+	if(setenv("PATH", path, 1) < 0) // NEED TO CREATE STRING THAT CONTAINS ONLY THE PATH AND NOT THE EXTRA ChARACTERS
+	{
+	   printf("Error setting PATH. \n");
+	   return 1;
+	}
+	
+	printf("PATH: %s\n",getenv("PATH"));
+	return 0;
+	
+}
+
+
+
+
+
+

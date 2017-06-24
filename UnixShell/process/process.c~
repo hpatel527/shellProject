@@ -1,0 +1,62 @@
+#include "process.h"
+
+void forkIt(char ** argv)
+{
+	int status;
+	pid_t pid = fork(); // create child process
+	
+	if(pid != 0) // in parent process
+	{
+		waitpid(pid, &status, 0);	
+		
+	}
+
+	else // in child process
+	{
+		int res = execvp(argv[0], argv);
+		
+		if(res)
+		{
+			exit(-1);
+			
+		}
+		
+	}
+
+
+
+}
+
+void forkItBackground(char ** argv, int argc ) // Pseudo-overloaded Method that forks but causes parent to work in background
+{
+	int status;
+	for(int i=1; i<argc; ++i)
+	{
+		argv[i] = argv[i+1];
+	}
+	--argc;
+	pid_t pid = fork(); // create child process
+	
+	
+	
+	
+	if(pid != 0) // in parent process
+	{			
+		
+	}
+
+	else // in child process
+	{
+		int res = execvp(argv, argv);
+		
+		if(res)
+		{
+			exit(-1);
+			
+		}
+		
+	}
+
+
+
+}
